@@ -1,0 +1,9 @@
+services:
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_DB=upe
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=upe
+    ports:
+      - 5432:5432
