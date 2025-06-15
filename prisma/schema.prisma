@@ -29,7 +29,7 @@ model Championship {
   description      String?
   year             Int
   status           ChampionshipStatus @default(REGISTRATION_OPEN)
-  formato          String
+  format           String
   numbersOfMatches Int                @default(1) // MD1, MD3, etc.
   beginDate        DateTime
   endDate          DateTime?

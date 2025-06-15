@@ -1,4 +1,3 @@
-import { User } from "../@types/user-types";
 import { prisma } from "../lib/prisma";
 
 export class UserServices {
