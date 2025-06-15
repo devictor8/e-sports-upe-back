@@ -1,33 +1,25 @@
-import { User } from "../@types/user-types";
-import { prisma } from "../lib/prisma";
+import { FastifyInstance } from "fastify";
+import { UserServices } from "../services/user-services";
+import { ZodTypeProvider } from "fastify-type-provider-zod";
+import { z } from "zod/v4";
 
-export class UserController {
-  static async create(
-    name: string,
-    email: string,
-    password: string,
-    role: "ADMIN" | "STUDENT"
-  ) {
-    const emailAlreadyInUse = await prisma.users.findUnique({
-      where: { email },
-    });
-
-    if (emailAlreadyInUse) throw new Error("Email já está em uso.");
-
-    const newUser = await prisma.users.create({
-      data: {
-        name,
-        email,
-        password,
-        role,
+export async function userController(app: FastifyInstance) {
+  app.withTypeProvider<ZodTypeProvider>().post(
+    "/user",
+    {
+      schema: {
+        body: z.object({
+          name: z.string(),
+          email: z.email("email inválido."),
+          password: z.string().min(6),
+          role: z.enum(["ADMIN", "STUDENT"]),
+        }),
       },
-    });
-
-    return newUser;
-  }
-
-  static async getAll() {
-    const users = await prisma.users.findMany();
-    return users;
-  }
+    },
+    async (request, reply) => {
+      const { name, email, password, role } = request.body;
+      const response = await UserServices.create(name, email, password, role);
+      reply.status(200).send(response);
+    }
+  );
 }

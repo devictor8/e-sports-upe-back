@@ -23,6 +23,54 @@ model Users {
   createdAt DateTime @default(now())
 }
 
+model Championship {
+  id               Int                @id @default(autoincrement())
+  name             String
+  description      String?
+  year             Int
+  status           ChampionshipStatus @default(REGISTRATION_OPEN)
+  formato          String
+  numbersOfMatches Int                @default(1) // MD1, MD3, etc.
+  beginDate        DateTime
+  endDate          DateTime?
+  teams            Team[]
+  matches          Match[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+}
+
+model Team {
+  id           String        @id @default(uuid())
+  name         String
+  teamMember   TeamMember[]
+  Championship Championship? @relation(fields: [championshipId], references: [id])
+
+  championshipId Int?
+  createdAt      DateTime @default(now())
+}
+
+model TeamMember {
+  id       String  @id @default(uuid())
+  nickName String
+  Team     Team?   @relation(fields: [teamId], references: [id])
+  teamId   String?
+}
+
+model Match {
+  id String @id @default(uuid())
+
+  Championship   Championship? @relation(fields: [championshipId], references: [id])
+  championshipId Int?
+}
+
+enum ChampionshipStatus {
+  REGISTRATION_OPEN
+  REGISTRATION_CLOSED
+  IN_PROGRESS
+  CLOSED
+}
+
 enum Role {
   STUDENT
   ADMIN
