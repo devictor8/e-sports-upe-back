@@ -27,4 +27,39 @@ export async function championshipController(app: FastifyInstance) {
       reply.status(201).send(response);
     }
   );
+
+  app.get("/championship", async (_, reply) => {
+    const response = await ChampionshipServices.getAllChampionships();
+
+    reply.status(200).send(response);
+  });
+
+  app.withTypeProvider<ZodTypeProvider>().patch(
+    "/championship/:id/status",
+    {
+      schema: {
+        params: z.object({
+          id: z.coerce.number(),
+        }),
+        body: z.object({
+          status: z.enum([
+            "REGISTRATION_OPEN",
+            "REGISTRATION_CLOSED",
+            "IN_PROGRESS",
+            "CLOSED",
+          ]),
+        }),
+      },
+    },
+    async (request, reply) => {
+      const { id } = request.params;
+
+      const response = await ChampionshipServices.changeChampionshipStatus(
+        id,
+        "REGISTRATION_CLOSED"
+      );
+
+      reply.status(200).send(response);
+    }
+  );
 }
