@@ -28,4 +28,21 @@ export function teamController(app: FastifyInstance) {
       reply.status(200).send(response);
     }
   );
+
+  app.withTypeProvider<ZodTypeProvider>().get(
+    "/team/:teamId",
+    {
+      schema: {
+        params: z.object({
+          teamId: z.uuid(),
+        }),
+      },
+    },
+    async (request, reply) => {
+      const { teamId } = request.params;
+      const response = await TeamService.getTeamsById(teamId);
+
+      reply.status(200).send(response);
+    }
+  );
 }

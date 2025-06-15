@@ -38,4 +38,28 @@ export class TeamService {
       createdMembersNumber: newTeamMembers.count,
     };
   }
+
+  static async getTeamsById(id: string) {
+    const team = await prisma.team.findFirst({
+      where: {
+        id,
+      },
+      select: {
+        id: true,
+        name: true,
+        championshipId: true,
+        createdAt: true,
+        teamMember: {
+          select: {
+            id: true,
+            nickName: true,
+          },
+        },
+      },
+    });
+
+    if (!team) throw new Error("O time não existe.");
+
+    return team;
+  }
 }
