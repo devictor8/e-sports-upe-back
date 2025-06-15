@@ -41,12 +41,12 @@ model Championship {
 }
 
 model Team {
-  id           String        @id @default(uuid())
+  id           String       @id @default(uuid())
   name         String
   teamMember   TeamMember[]
-  Championship Championship? @relation(fields: [championshipId], references: [id])
+  Championship Championship @relation(fields: [championshipId], references: [id])
 
-  championshipId Int?
+  championshipId Int
   createdAt      DateTime @default(now())
 }
 
