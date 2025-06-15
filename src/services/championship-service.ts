@@ -15,15 +15,25 @@ export class ChampionshipServices {
     return championships;
   }
 
+  static async getById(id: number) {
+    const Championship = await prisma.championship.findFirst({
+      where: { id },
+    });
+
+    if (!Championship) throw new Error("Campeonato não existe.");
+
+    return Championship;
+  }
+
   static async changeChampionshipStatus(
     id: number,
     status: ChampionshipStatus
   ) {
-    const findChampionship = await prisma.championship.findFirst({
+    const Championship = await prisma.championship.findFirst({
       where: { id },
     });
 
-    if (!findChampionship) throw new Error("Campeonato não existe.");
+    if (!Championship) throw new Error("Campeonato não existe.");
 
     const updatedChampionship = await prisma.championship.update({
       where: { id },

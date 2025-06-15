@@ -62,4 +62,21 @@ export async function championshipController(app: FastifyInstance) {
       reply.status(200).send(response);
     }
   );
+
+  app.withTypeProvider<ZodTypeProvider>().get(
+    "/championship/:id",
+    {
+      schema: {
+        params: z.object({
+          id: z.coerce.number(),
+        }),
+      },
+    },
+    async (request, reply) => {
+      const { id } = request.params;
+      const response = await ChampionshipServices.getById(id);
+
+      reply.status(200).send(response);
+    }
+  );
 }
