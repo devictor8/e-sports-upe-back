@@ -3,17 +3,21 @@ import { prisma } from "../lib/prisma";
 
 export class TeamService {
   static async createTeam(data: CreateTeam) {
-    const { championshipId, teamMembers, name } = data;
+    const { championshipId, name } = data;
     const championship = await prisma.championship.findFirst({
       where: { id: championshipId },
     });
 
     if (!championship) throw new Error("Campeonato não existe.");
 
+    if (championship.status !== "REGISTRATION_OPEN") {
+      throw new Error("O campeonato não aceita mais inscrições.");
+    }
+
     const existingTeam = await prisma.team.findFirst({
       where: {
         championshipId,
-        name: data.name,
+        name: name,
       },
     });
 
@@ -22,7 +26,7 @@ export class TeamService {
     const newTeam = await prisma.team.create({
       data: {
         championshipId,
-        name: data.name,
+        name: name,
       },
     });
 
