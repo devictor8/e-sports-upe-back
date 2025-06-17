@@ -1,4 +1,4 @@
-import { FastifyInstance } from "fastify";
+import fastify, { FastifyInstance } from "fastify";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
 import { z } from "zod/v4";
 import { ChampionshipServices } from "../services/championship-service";
@@ -28,11 +28,15 @@ export async function championshipController(app: FastifyInstance) {
     }
   );
 
-  app.get("/championship", async (_, reply) => {
-    const response = await ChampionshipServices.getAllChampionships();
+  app.get(
+    "/championship",
+    { onRequest: [app.authStudent] },
+    async (_, reply) => {
+      const response = await ChampionshipServices.getAllChampionships();
 
-    reply.status(200).send(response);
-  });
+      reply.status(200).send(response);
+    }
+  );
 
   app.withTypeProvider<ZodTypeProvider>().patch(
     "/championship/:id/status",
@@ -56,7 +60,7 @@ export async function championshipController(app: FastifyInstance) {
 
       const response = await ChampionshipServices.changeChampionshipStatus(
         id,
-        "REGISTRATION_CLOSED"
+        request.body.status
       );
 
       reply.status(200).send(response);

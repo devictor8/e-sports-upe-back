@@ -9,11 +9,16 @@ import {
   teamController,
 } from "./controllers";
 
+import authPlugin from "./plugin/jwt-plugin";
+import { authController } from "./controllers/auth-controller";
+
 const app = fastify();
 
 app.setValidatorCompiler(validatorCompiler);
 app.setSerializerCompiler(serializerCompiler);
+app.register(authPlugin);
 
+app.register(authController);
 app.register(userController);
 app.register(championshipController);
 app.register(teamController);
