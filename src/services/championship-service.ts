@@ -1,6 +1,6 @@
 import { ChampionshipStatus } from "../../prisma/generated/client";
 import { CreateChampionship } from "../@types/championship-types";
-import { prisma } from "../lib/prisma";
+import { prisma } from "../config/prisma";
 
 export class ChampionshipServices {
   static async createChampionship(data: CreateChampionship) {

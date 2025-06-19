@@ -11,6 +11,7 @@ import {
 
 import authPlugin from "./plugin/jwt-plugin";
 import { authController } from "./controllers/auth-controller";
+import { env } from "./config/env";
 
 const app = fastify();
 
@@ -23,6 +24,6 @@ app.register(userController);
 app.register(championshipController);
 app.register(teamController);
 
-app.listen({ port: 3333 }, () => {
+app.listen({ port: env.PORT }, () => {
   console.log("Server running on port 3333");
 });

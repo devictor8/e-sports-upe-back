@@ -1,5 +1,5 @@
 import fastify, { FastifyInstance } from "fastify";
-import { prisma } from "../lib/prisma";
+import { prisma } from "../config/prisma";
 
 export class AuthService {
   private jwt: FastifyInstance["jwt"];

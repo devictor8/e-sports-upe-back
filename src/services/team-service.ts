@@ -1,5 +1,5 @@
 import { CreateTeam } from "../@types/team-types";
-import { prisma } from "../lib/prisma";
+import { prisma } from "../config/prisma";
 
 export class TeamService {
   static async createTeam(data: CreateTeam) {

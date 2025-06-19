@@ -1,6 +1,7 @@
 import fp from "fastify-plugin";
 import fastifyJwt from "@fastify/jwt";
 import { FastifyReply, FastifyRequest } from "fastify";
+import { env } from "../config/env";
 
 const errorMessage = {
   badRequestErrorMessage: "O formato é Authorization: Bearer [token]",
@@ -17,7 +18,7 @@ const errorMessage = {
 
 export default fp(async (fastify, opts) => {
   fastify.register(fastifyJwt, {
-    secret: "bolinha",
+    secret: env.JWT_SECRET,
     messages: errorMessage,
   });
 
