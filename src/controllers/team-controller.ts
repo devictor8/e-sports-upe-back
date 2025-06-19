@@ -7,6 +7,7 @@ export function teamController(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().post(
     "/team/:championshipId",
     {
+      onRequest: [app.authStudent],
       schema: {
         params: z.object({
           championshipId: z.coerce.number(),
@@ -32,6 +33,7 @@ export function teamController(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().get(
     "/team/:teamId",
     {
+      onRequest: [app.authStudent],
       schema: {
         params: z.object({
           teamId: z.uuid(),

@@ -2,9 +2,23 @@ import fp from "fastify-plugin";
 import fastifyJwt from "@fastify/jwt";
 import { FastifyReply, FastifyRequest } from "fastify";
 
+const errorMessage = {
+  badRequestErrorMessage: "O formato é Authorization: Bearer [token]",
+  badCookieRequestErrorMessage:
+    "Não foi possível interpretar o cookie na requisição",
+  noAuthorizationInHeaderMessage:
+    "Nenhuma autorização foi encontrada em request.headers",
+  noAuthorizationInCookieMessage:
+    "Nenhuma autorização foi encontrada em request.cookies",
+  authorizationTokenExpiredMessage: "O token de autorização expirou",
+  authorizationTokenUntrusted: "Token de autorização não confiável",
+  authorizationTokenUnsigned: "Token de autorização não assinado",
+};
+
 export default fp(async (fastify, opts) => {
   fastify.register(fastifyJwt, {
     secret: "bolinha",
+    messages: errorMessage,
   });
 
   fastify.decorate(
@@ -29,6 +43,18 @@ export default fp(async (fastify, opts) => {
         if (request.user.role !== "STUDENT") {
           throw new Error("Só estudantes podem usar essa rota.");
         }
+      } catch (error) {
+        reply.send(error);
+      }
+    }
+  );
+
+  fastify.decorate(
+    "authUser",
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      try {
+        await request.jwtVerify();
+        Error("Você precisa estar autenticado para usar essa rota.");
       } catch (error) {
         reply.send(error);
       }
