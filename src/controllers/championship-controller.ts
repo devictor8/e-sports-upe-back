@@ -9,6 +9,7 @@ export async function championshipController(app: FastifyInstance) {
     {
       onRequest: [app.authAdmin],
       schema: {
+        tags: ["Championship"],
         body: z.object({
           name: z.string(),
           description: z.string().nullable(),
@@ -29,16 +30,21 @@ export async function championshipController(app: FastifyInstance) {
     }
   );
 
-  app.get("/championship", { onRequest: [app.authUser] }, async (_, reply) => {
-    const response = await ChampionshipServices.getAllChampionships();
+  app.get(
+    "/championship",
+    { onRequest: [app.authUser], schema: { tags: ["Championship"] } },
+    async (_, reply) => {
+      const response = await ChampionshipServices.getAllChampionships();
 
-    reply.status(200).send(response);
-  });
+      reply.status(200).send(response);
+    }
+  );
 
   app.withTypeProvider<ZodTypeProvider>().patch(
     "/championship/:id/status",
     {
       schema: {
+        tags: ["Championship"],
         params: z.object({
           id: z.coerce.number(),
         }),
@@ -69,6 +75,7 @@ export async function championshipController(app: FastifyInstance) {
     {
       onRequest: [app.authUser],
       schema: {
+        tags: ["Championship"],
         params: z.object({
           id: z.coerce.number(),
         }),

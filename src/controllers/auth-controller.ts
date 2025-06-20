@@ -10,6 +10,7 @@ export function authController(app: FastifyInstance) {
     "/signin",
     {
       schema: {
+        tags: ["Auth"],
         body: z.object({
           email: z.email(),
           password: z.string().min(6),
@@ -28,6 +29,7 @@ export function authController(app: FastifyInstance) {
     "/signup/student",
     {
       schema: {
+        tags: ["Auth"],
         body: z.object({
           name: z.string(),
           email: z.email("email inválido."),
@@ -52,6 +54,7 @@ export function authController(app: FastifyInstance) {
     {
       onRequest: [app.authAdmin],
       schema: {
+        tags: ["Auth"],
         body: z.object({
           name: z.string(),
           email: z.email("email inválido."),

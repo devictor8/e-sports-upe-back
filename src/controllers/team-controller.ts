@@ -9,6 +9,7 @@ export function teamController(app: FastifyInstance) {
     {
       onRequest: [app.authStudent],
       schema: {
+        tags: ["Team"],
         params: z.object({
           championshipId: z.coerce.number(),
         }),
@@ -35,6 +36,7 @@ export function teamController(app: FastifyInstance) {
     {
       onRequest: [app.authStudent],
       schema: {
+        tags: ["Team"],
         params: z.object({
           teamId: z.uuid(),
         }),
