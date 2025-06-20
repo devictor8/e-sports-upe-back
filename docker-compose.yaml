@@ -5,5 +5,11 @@ services:
       - POSTGRES_DB=upe
       - POSTGRES_PASSWORD=password
       - POSTGRES_USER=upe
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
     ports:
       - 5432:5432
+    restart: always
+
+volumes:
+  postgres_data:
