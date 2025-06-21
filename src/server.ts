@@ -15,6 +15,7 @@ import { authController } from "./controllers/auth-controller";
 import { env } from "./config/env";
 import fastifySwagger from "@fastify/swagger";
 import fastifySwaggerUi from "@fastify/swagger-ui";
+import { errorHandler } from "./infra/error-handler";
 
 const app = fastify();
 app.register(cors, {
@@ -45,6 +46,8 @@ app.register(authController);
 app.register(userController);
 app.register(championshipController);
 app.register(teamController);
+
+app.setErrorHandler(errorHandler);
 
 app.listen({ port: env.PORT, host: "0.0.0.0" }, () => {
   console.log("Server running on port 3333");

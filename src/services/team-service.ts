@@ -1,5 +1,6 @@
 import { CreateTeam } from "../@types/team-types";
 import { prisma } from "../config/prisma";
+import { Conflict, Forbidden, NotFound } from "../infra/exceptions";
 
 export class TeamService {
   static async createTeam(data: CreateTeam) {
@@ -8,10 +9,10 @@ export class TeamService {
       where: { id: championshipId },
     });
 
-    if (!championship) throw new Error("Campeonato não existe.");
+    if (!championship) throw new NotFound("Campeonato não existe.");
 
     if (championship.status !== "REGISTRATION_OPEN") {
-      throw new Error("O campeonato não aceita mais inscrições.");
+      throw new Forbidden("O campeonato não aceita mais inscrições.");
     }
 
     const existingTeam = await prisma.team.findFirst({
@@ -21,7 +22,7 @@ export class TeamService {
       },
     });
 
-    if (existingTeam) throw new Error("Time já existe.");
+    if (existingTeam) throw new Conflict("Time já existe.");
 
     const newTeam = await prisma.team.create({
       data: {
@@ -62,7 +63,7 @@ export class TeamService {
       },
     });
 
-    if (!team) throw new Error("O time não existe.");
+    if (!team) throw new NotFound("O time não existe.");
 
     return team;
   }

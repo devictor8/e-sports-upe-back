@@ -1,4 +1,4 @@
-import { HttpStatusCode } from "./http-status-codes";
+import { HttpStatusCode } from "../http-status-codes";
 import { BaseError } from "./base-error";
 
 export class TooManyRequest extends BaseError {

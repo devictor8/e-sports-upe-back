@@ -2,6 +2,7 @@ import { FastifyInstance } from "fastify";
 import { prisma } from "../config/prisma";
 import bcrypt from "bcrypt";
 import { Role } from "../../prisma/generated/client";
+import { Unauthorized, Conflict } from "../infra/exceptions";
 
 export class AuthService {
   private jwt: FastifyInstance["jwt"];
@@ -15,7 +16,8 @@ export class AuthService {
       where: { email },
     });
 
-    if (findExistingEmail) throw new Error("Usuário já registrado.");
+    if (findExistingEmail) throw new Conflict("Usuário já registrado.");
+
     const hashedPassword = await bcrypt.hashSync(password, 10);
 
     const newUser = await prisma.users.create({
@@ -36,7 +38,7 @@ export class AuthService {
     });
 
     if (!user || !(await bcrypt.compare(password, user.password))) {
-      throw new Error("Credenciais erradas.");
+      throw new Unauthorized("Credenciais erradas.");
     }
 
     const token = this.jwt.sign(

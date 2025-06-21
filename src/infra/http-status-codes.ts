@@ -13,4 +13,5 @@ export const HttpStatusCode = {
   BAD_GATEWAY: 502,
   SERVICE_UNAVAILABLE: 503,
   GATEWAY_TIMEOUT: 504,
+  CONFLICT: 409,
 };

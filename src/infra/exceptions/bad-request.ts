@@ -1,5 +1,5 @@
-import { BaseError } from "./base-error.js";
-import { HttpStatusCode } from "./http-status-codes";
+import { BaseError } from "./base-error";
+import { HttpStatusCode } from "../http-status-codes";
 
 export class BadRequest extends BaseError {
   constructor(description: string) {

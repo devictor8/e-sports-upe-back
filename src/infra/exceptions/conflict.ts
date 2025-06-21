@@ -1,8 +1,8 @@
 import { BaseError } from "./base-error";
 import { HttpStatusCode } from "../http-status-codes";
 
-export class BadGateway extends BaseError {
+export class Conflict extends BaseError {
   constructor(description: string) {
-    super("BAD GATEWAY", HttpStatusCode.BAD_GATEWAY, description);
+    super("CONFLICT", HttpStatusCode.CONFLICT, description);
   }
 }

@@ -1,6 +1,7 @@
 import { ChampionshipStatus } from "../../prisma/generated/client";
 import { CreateChampionship } from "../@types/championship-types";
 import { prisma } from "../config/prisma";
+import { NotFound } from "../infra/exceptions";
 
 export class ChampionshipServices {
   static async createChampionship(data: CreateChampionship) {
@@ -10,6 +11,7 @@ export class ChampionshipServices {
 
     return newChampionship;
   }
+
   static async getAllChampionships() {
     const championships = await prisma.championship.findMany();
     return championships;
@@ -20,7 +22,7 @@ export class ChampionshipServices {
       where: { id },
     });
 
-    if (!Championship) throw new Error("Campeonato não existe.");
+    if (!Championship) throw new NotFound("Campeonato não existe.");
 
     return Championship;
   }
@@ -33,7 +35,7 @@ export class ChampionshipServices {
       where: { id },
     });
 
-    if (!Championship) throw new Error("Campeonato não existe.");
+    if (!Championship) throw new NotFound("Campeonato não existe.");
 
     const updatedChampionship = await prisma.championship.update({
       where: { id },
