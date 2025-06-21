@@ -1,6 +1,5 @@
 import fastify from "fastify";
 import {
-  jsonSchemaTransform,
   serializerCompiler,
   validatorCompiler,
 } from "fastify-type-provider-zod";
@@ -13,9 +12,9 @@ import cors from "@fastify/cors";
 import authPlugin from "./plugin/jwt-plugin";
 import { authController } from "./controllers/auth-controller";
 import { env } from "./config/env";
-import fastifySwagger from "@fastify/swagger";
 import fastifySwaggerUi from "@fastify/swagger-ui";
 import { errorHandler } from "./infra/error-handler";
+import swaggerPlugin from "./plugin/swagger-plugin";
 
 const app = fastify();
 app.register(cors, {
@@ -24,17 +23,7 @@ app.register(cors, {
 
 app.setValidatorCompiler(validatorCompiler);
 app.setSerializerCompiler(serializerCompiler);
-app.register(fastifySwagger, {
-  openapi: {
-    info: {
-      title: "UPE E-Sports",
-      description: "Documentação da API",
-      version: "1.0.0",
-    },
-    servers: [],
-  },
-  transform: jsonSchemaTransform,
-});
+app.register(swaggerPlugin);
 
 app.register(fastifySwaggerUi, {
   routePrefix: "/api-docs",

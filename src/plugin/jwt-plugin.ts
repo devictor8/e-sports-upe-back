@@ -2,6 +2,7 @@ import fp from "fastify-plugin";
 import fastifyJwt from "@fastify/jwt";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { env } from "../config/env";
+import { Unauthorized } from "../infra/exceptions";
 
 const errorMessage = {
   badRequestErrorMessage: "O formato é Authorization: Bearer [token]",
@@ -42,7 +43,7 @@ export default fp(async (fastify, opts) => {
       try {
         await request.jwtVerify();
         if (request.user.role !== "STUDENT") {
-          throw new Error("Só estudantes podem usar essa rota.");
+          throw new Unauthorized("Só estudantes podem usar essa rota.");
         }
       } catch (error) {
         reply.send(error);
@@ -55,7 +56,6 @@ export default fp(async (fastify, opts) => {
     async (request: FastifyRequest, reply: FastifyReply) => {
       try {
         await request.jwtVerify();
-        Error("Você precisa estar autenticado para usar essa rota.");
       } catch (error) {
         reply.send(error);
       }
