@@ -11,8 +11,44 @@ async function main() {
       role: "ADMIN",
     },
   });
-
   console.log("Admin criado com sucesso");
+
+  const result = await prisma.game.createMany({
+    data: [
+      {
+        name: "Valorant",
+        description:
+          "FPS tático competitivo em equipes 5v5 com habilidades únicas por agente.",
+        developer: "Riot Games",
+      },
+      {
+        name: "League of Legends",
+        description:
+          "MOBA 5v5 em que equipes competem para destruir a base adversária.",
+        developer: "Riot Games",
+      },
+      {
+        name: "Counter Strike 2",
+        description:
+          "FPS clássico de tiro tático entre times terroristas e contra-terroristas.",
+        developer: "Valve",
+      },
+      {
+        name: "EA FC",
+        description:
+          "Simulador de futebol realista com modos online e offline.",
+        developer: "EA Sports",
+      },
+      {
+        name: "Fortnite",
+        description:
+          "Jogo de battle royale com construção e elementos criativos.",
+        developer: "Epic Games",
+      },
+    ],
+  });
+
+  console.log(`${result.count} jogos foram criados`);
 }
 
 main()

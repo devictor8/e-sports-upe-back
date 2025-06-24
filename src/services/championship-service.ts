@@ -5,8 +5,19 @@ import { NotFound } from "../infra/exceptions";
 
 export class ChampionshipServices {
   static async createChampionship(data: CreateChampionship) {
+    const game = await prisma.game.findUnique({
+      where: {
+        id: data.gameId,
+      },
+    });
+
+    if (!game) throw new NotFound("Não existe nenhum jogo com esse nome");
+
     const newChampionship = await prisma.championship.create({
-      data,
+      data: {
+        ...data,
+        gameId: game.id,
+      },
     });
 
     return newChampionship;

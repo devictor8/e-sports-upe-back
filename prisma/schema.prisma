@@ -23,6 +23,14 @@ model Users {
   createdAt DateTime @default(now())
 }
 
+model Game {
+  id            Int            @id @default(autoincrement())
+  name          String         @unique
+  description   String?
+  developer     String?
+  championships Championship[]
+}
+
 model Championship {
   id               Int                @id @default(autoincrement())
   name             String
@@ -35,6 +43,8 @@ model Championship {
   endDate          DateTime?
   teams            Team[]
   matches          Match[]
+  gameId           Int
+  Game             Game               @relation(fields: [gameId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt()

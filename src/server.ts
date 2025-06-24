@@ -15,6 +15,7 @@ import { env } from "./config/env";
 import fastifySwaggerUi from "@fastify/swagger-ui";
 import { errorHandler } from "./infra/error-handler";
 import swaggerPlugin from "./plugin/swagger-plugin";
+import { GameController } from "./controllers/game-controller";
 
 const app = fastify();
 app.register(cors, {
@@ -35,6 +36,7 @@ app.register(authController);
 app.register(userController);
 app.register(championshipController);
 app.register(teamController);
+app.register(GameController);
 
 app.setErrorHandler(errorHandler);
 

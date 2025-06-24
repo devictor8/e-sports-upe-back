@@ -5,11 +5,14 @@ import { ChampionshipServices } from "../services/championship-service";
 
 export async function championshipController(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().post(
-    "/championship",
+    "/:gameId/championship",
     {
       onRequest: [app.authAdmin],
       schema: {
         tags: ["Championship"],
+        params: z.object({
+          gameId: z.coerce.number(),
+        }),
         body: z.object({
           name: z.string(),
           description: z.string().nullable(),
@@ -22,9 +25,10 @@ export async function championshipController(app: FastifyInstance) {
       },
     },
     async (request, reply) => {
-      const response = await ChampionshipServices.createChampionship(
-        request.body
-      );
+      const response = await ChampionshipServices.createChampionship({
+        ...request.body,
+        gameId: request.params.gameId,
+      });
 
       reply.status(201).send(response);
     }
