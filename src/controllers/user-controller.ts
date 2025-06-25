@@ -8,6 +8,9 @@ export async function userController(app: FastifyInstance) {
     "/users",
     {
       onRequest: [app.authAdmin],
+      schema: {
+        tags: ["Users"],
+      },
     },
     async (request, reply) => {
       const response = await UserServices.getAll();
