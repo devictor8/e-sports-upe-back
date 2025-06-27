@@ -7,7 +7,7 @@ export class GameService {
     return games;
   }
 
-  static async getGameByName(name: string) {
+  static async getGameById(id: number) {
     const game = await prisma.game.findUnique({
       select: {
         id: true,
@@ -16,7 +16,7 @@ export class GameService {
         description: true,
         championships: true,
       },
-      where: { name },
+      where: { id },
     });
 
     if (!game) throw new NotFound("Jogo não existe");

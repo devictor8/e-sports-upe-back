@@ -16,7 +16,6 @@ export async function championshipController(app: FastifyInstance) {
         body: z.object({
           name: z.string(),
           description: z.string().nullable(),
-          year: z.number(),
           format: z.string(),
           numbersOfMatches: z.number(),
           beginDate: z.coerce.date(),

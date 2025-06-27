@@ -19,18 +19,18 @@ export function GameController(app: FastifyInstance) {
   );
 
   app.withTypeProvider<ZodTypeProvider>().get(
-    "/games/:gameName",
+    "/games/:gameId",
     {
       onRequest: [app.authUser],
       schema: {
         tags: ["Games"],
         params: z.object({
-          gameName: z.string(),
+          gameId: z.coerce.number(),
         }),
       },
     },
     async (request, reply) => {
-      const response = await GameService.getGameByName(request.params.gameName);
+      const response = await GameService.getGameById(request.params.gameId);
 
       reply.status(200).send(response);
     }

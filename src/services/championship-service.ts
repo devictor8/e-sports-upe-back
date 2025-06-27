@@ -17,6 +17,7 @@ export class ChampionshipServices {
       data: {
         ...data,
         gameId: game.id,
+        year: new Date().getFullYear(),
       },
     });
 
@@ -31,6 +32,20 @@ export class ChampionshipServices {
   static async getById(id: number) {
     const Championship = await prisma.championship.findFirst({
       where: { id },
+      select: {
+        id: true,
+        name: true,
+        beginDate: true,
+        description: true,
+        createdAt: true,
+        year: true,
+        format: true,
+        numbersOfMatches: true,
+        gameId: true,
+        endDate: true,
+        status: true,
+        teams: true,
+      },
     });
 
     if (!Championship) throw new NotFound("Campeonato não existe.");
