@@ -48,7 +48,12 @@ export class ChampionshipServices {
           select: {
             id: true,
             name: true,
-            teamMember: true,
+            teamMember: {
+              select: {
+                nickName: true,
+                id: true,
+              },
+            },
           },
         },
       },
