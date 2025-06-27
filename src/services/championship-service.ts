@@ -44,7 +44,13 @@ export class ChampionshipServices {
         gameId: true,
         endDate: true,
         status: true,
-        teams: true,
+        teams: {
+          select: {
+            id: true,
+            name: true,
+            teamMember: true,
+          },
+        },
       },
     });
 
