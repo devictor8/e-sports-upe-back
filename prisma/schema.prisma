@@ -24,11 +24,12 @@ model Users {
 }
 
 model Game {
-  id            Int            @id @default(autoincrement())
-  name          String         @unique
-  description   String?
-  developer     String?
-  championships Championship[]
+  id               Int            @id @default(autoincrement())
+  name             String         @unique
+  description      String?
+  developer        String?
+  numPlayersByTeam Int
+  championships    Championship[]
 }
 
 model Championship {

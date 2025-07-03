@@ -21,6 +21,7 @@ async function main() {
         description:
           "FPS tático competitivo em equipes 5v5 com habilidades únicas por agente.",
         developer: "Riot Games",
+        numPlayersByTeam: 5,
       },
       {
         id: 5,
@@ -28,6 +29,7 @@ async function main() {
         description:
           "MOBA 5v5 em que equipes competem para destruir a base adversária.",
         developer: "Riot Games",
+        numPlayersByTeam: 5,
       },
       {
         id: 2,
@@ -35,6 +37,7 @@ async function main() {
         description:
           "FPS clássico de tiro tático entre times terroristas e contra-terroristas.",
         developer: "Valve",
+        numPlayersByTeam: 5,
       },
       {
         id: 3,
@@ -42,6 +45,7 @@ async function main() {
         description:
           "Simulador de futebol realista com modos online e offline.",
         developer: "EA Sports",
+        numPlayersByTeam: 1,
       },
       {
         id: 4,
@@ -49,6 +53,7 @@ async function main() {
         description:
           "Jogo de battle royale com construção e elementos criativos.",
         developer: "Epic Games",
+        numPlayersByTeam: 4,
       },
     ],
   });

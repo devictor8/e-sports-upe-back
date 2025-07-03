@@ -1,18 +1,31 @@
 import { CreateTeam } from "../@types/team-types";
 import { prisma } from "../config/prisma";
-import { Conflict, Forbidden, NotFound } from "../infra/exceptions";
+import { BadRequest, Conflict, Forbidden, NotFound } from "../infra/exceptions";
 
 export class TeamService {
   static async createTeam(data: CreateTeam) {
     const { championshipId, name } = data;
     const championship = await prisma.championship.findFirst({
       where: { id: championshipId },
+      select: {
+        id: true,
+        status: true,
+        Game: {
+          select: {
+            numPlayersByTeam: true,
+          },
+        },
+      },
     });
 
     if (!championship) throw new NotFound("Campeonato não existe.");
 
     if (championship.status !== "REGISTRATION_OPEN") {
       throw new Forbidden("O campeonato não aceita mais inscrições.");
+    }
+
+    if (championship.Game.numPlayersByTeam != data.teamMembers.length) {
+      throw new BadRequest("O número de pessoas no time está errado");
     }
 
     const existingTeam = await prisma.team.findFirst({

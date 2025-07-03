@@ -30,7 +30,7 @@ export class ChampionshipServices {
   }
 
   static async getById(id: number) {
-    const Championship = await prisma.championship.findFirst({
+    const championship = await prisma.championship.findFirst({
       where: { id },
       select: {
         id: true,
@@ -56,12 +56,22 @@ export class ChampionshipServices {
             },
           },
         },
+        Game: {
+          select: {
+            numPlayersByTeam: true,
+          },
+        },
       },
     });
 
-    if (!Championship) throw new NotFound("Campeonato não existe.");
+    if (!championship) throw new NotFound("Campeonato não existe.");
 
-    return Championship;
+    const { Game, ...rest } = championship;
+
+    return {
+      ...rest,
+      numPlayersByTeam: Game.numPlayersByTeam,
+    };
   }
 
   static async changeChampionshipStatus(
